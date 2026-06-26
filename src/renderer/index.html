@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>CaisseFacile</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 0; background: #eaeded; }
+        nav { background: #2c3e50; padding: 10px 20px; display: flex; gap: 10px; }
+        nav button { background: none; border: none; color: #bdc3c7; font-size: 15px; font-weight: bold; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
+        nav button.active { background: #34495e; color: white; }
+        .tab-content { padding: 20px; display: none; }
+        .tab-content.active { display: block; }
+        .grid { display: flex; gap: 20px; }
+        .box { background: white; padding: 20px; border-radius: 8px; flex: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        input, button { padding: 12px; margin: 6px 0; box-sizing: border-box; font-size: 14px; }
+        .btn-green { background: #27ae60; color: white; border: none; font-weight: bold; cursor: pointer; width: 100%; }
+        .btn-blue { background: #2980b9; color: white; border: none; font-weight: bold; cursor: pointer; width: 100%; }
+        .btn-dark { background: #34495e; color: white; border: none; font-weight: bold; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border-bottom: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f8f9f9; }
+        .total-display { font-size: 32px; font-weight: bold; color: #e74c3c; text-align: right; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <button id="nav-pos" class="active" onclick="switchTab('pos')">🛒 CAISSE</button>
+        <button id="nav-cat" onclick="switchTab('cat')">📦 CATALOGUE</button>
+        <button id="nav-sales" onclick="switchTab('sales')">📊 HISTORIQUE & COMPTA</button>
+    </nav>
+
+    <div id="tab-pos" class="tab-content active">
+        <div class="grid">
+            <div class="box" style="flex: 1;">
+                <h2>Scan / Saisie</h2>
+                <input type="text" id="pos-scan" placeholder="Code EAN ou SKU..." style="width:100%; font-size:18px;" autofocus>
+            </div>
+            <div class="box" style="flex: 2;">
+                <h2>Ticket en cours</h2>
+                <table>
+                    <thead><tr><th>Article</th><th>Prix</th><th>Qté</th><th>Total</th><th></th></tr></thead>
+                    <tbody id="cart-list"></tbody>
+                </table>
+                <div class="total-display">TOTAL: <span id="cart-total">0.00</span> €</div>
+                <button class="btn-green" id="btn-pay" style="font-size:20px; padding:20px;">💵 VALIDER L'ENCAISSEMENT</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-cat" class="tab-content">
+        <div class="grid">
+            <div class="box">
+                <h3>Nouveau Produit</h3>
+                <input type="text" id="cat-ean" placeholder="Code-barres">
+                <button class="btn-blue" id="btn-lookup">Rechercher OpenFoodFacts</button><hr>
+                <input type="text" id="cat-name" placeholder="Nom">
+                <input type="number" step="0.01" id="cat-price" placeholder="Prix (€)">
+                <button class="btn-green" id="btn-save-cat">Enregistrer</button>
+            </div>
+            <div class="box"><h3>Stock</h3><table><thead><tr><th>SKU</th><th>Nom</th><th>Prix</th></tr></thead><tbody id="cat-list"></tbody></table></div>
+        </div>
+    </div>
+
+    <div id="tab-sales" class="tab-content">
+        <div class="box">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2>Journal des ventes</h2>
+                <button class="btn-dark" id="btn-export" style="padding:15px 30px;">📥 EXPORTER POUR LE COMPTABLE (.CSV)</button>
+            </div>
+            <table>
+                <thead><tr><th># Ticket</th><th>Date de transaction</th><th>Montant TTC</th></tr></thead>
+                <tbody id="sales-list"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
